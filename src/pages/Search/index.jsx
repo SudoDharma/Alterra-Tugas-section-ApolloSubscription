@@ -4,7 +4,7 @@ import styles from "./style.module.css"
 
 import { useParams, useLocation } from "react-router-dom"
 
-import { useLazyQuery, useQuery } from "@apollo/client"
+import { useLazyQuery } from "@apollo/client"
 import { GET_PENGUNJUNG_BY_PK } from "../../queries/pengunjung"
 
 import Input from "../../component/Input"
@@ -15,13 +15,18 @@ const Search = () => {
     const param = useParams()
     const location = useLocation()
 
-    const [get_pengunjung_by_pk, {data, loading, error }] = useLazyQuery(GET_PENGUNJUNG_BY_PK)
+    const [get_pengunjung_by_pk, {data, loading, error, refetch }] = useLazyQuery(GET_PENGUNJUNG_BY_PK)
 
     useEffect(() => {
         get_pengunjung_by_pk({
             variables: {id: param.id}
         })
     },[location])
+
+    useEffect(() => {
+        refetch()
+    },[data])
+
 
     return(
         <div className={styles.container}>
